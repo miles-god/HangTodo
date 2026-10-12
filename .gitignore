@@ -3,3 +3,21 @@ build/
 .DS_Store
 *.xcodeproj
 .swiftpm/
+
+# Local design notes and unused upstream screenshot-app assets.
+.impeccable.md
+docs/images/
+docs/i18n/
+Sources/Tendedero/Resources/
+scripts/make-icon.swift
+scripts/make-readme-art.swift
+scripts/check-strings.swift
+
+# Local credentials and editor settings.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.vscode/
+.idea/

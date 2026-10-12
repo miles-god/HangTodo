@@ -2,11 +2,10 @@
 import PackageDescription
 
 let package = Package(
-    name: "Tendedero",
+    name: "HangTodo",
     platforms: [.macOS(.v14)],
     targets: [
-        // Resources holds the translations. scripts/build-app.sh copies them
-        // into the app, so SwiftPM leaves them alone.
-        .executableTarget(name: "Tendedero", path: "Sources/Tendedero", exclude: ["Resources"])
+        .executableTarget(name: "HangTodo", path: "Sources/Tendedero"),
+        .testTarget(name: "HangTodoTests", dependencies: ["HangTodo"])
     ]
 )

@@ -1,4 +1,5 @@
 import AppKit
+import Combine
 import Carbon
 
 /// A single global shortcut through the Carbon hot key API. Unlike a global
@@ -32,30 +33,35 @@ final class HotKey {
     }
 }
 
-/// The shortcut that shows and hides the line: ⌃⌥T unless changed, or none.
+/// The shortcut that shows and hides the line: ⌥T unless changed, or none.
 struct Shortcut: Equatable {
     var keyCode: Int
     var modifiers: NSEvent.ModifierFlags
     /// The key as typed, for the menu: "t", " ", "1".
     var key: String
 
-    static let standard = Shortcut(keyCode: kVK_ANSI_T, modifiers: [.control, .option], key: "t")
+    static let standard = Shortcut(keyCode: kVK_ANSI_T, modifiers: .option, key: "t")
 
     private static let defaultsKey = "shortcut"
 
     /// The user's choice. Nil means no shortcut at all.
     static var current: Shortcut? {
-        get {
-            guard let saved = UserDefaults.standard.dictionary(forKey: defaultsKey) else { return standard }
-            guard let code = saved["keyCode"] as? Int, let flags = saved["modifiers"] as? UInt,
-                  let key = saved["key"] as? String else { return nil }
-            return Shortcut(keyCode: code, modifiers: NSEvent.ModifierFlags(rawValue: flags), key: key)
-        }
-        set {
-            UserDefaults.standard.set(newValue.map {
-                ["keyCode": $0.keyCode, "modifiers": $0.modifiers.rawValue, "key": $0.key] as [String: Any]
-            } ?? [:], forKey: defaultsKey)
-        }
+        get { load(from: .standard) }
+        set { save(newValue, to: .standard) }
+    }
+
+    static func load(from defaults: UserDefaults) -> Shortcut? {
+        guard let saved = defaults.dictionary(forKey: defaultsKey) else { return standard }
+        if saved.isEmpty { return nil }
+        guard let code = saved["keyCode"] as? NSNumber, (0...Int(UInt16.max)).contains(code.intValue),
+              let flags = saved["modifiers"] as? NSNumber, let key = saved["key"] as? String, !key.isEmpty else { return standard }
+        return Shortcut(keyCode: code.intValue, modifiers: NSEvent.ModifierFlags(rawValue: flags.uintValue), key: key)
+    }
+
+    static func save(_ shortcut: Shortcut?, to defaults: UserDefaults) {
+        defaults.set(shortcut.map {
+            ["keyCode": $0.keyCode, "modifiers": NSNumber(value: $0.modifiers.rawValue), "key": $0.key] as [String: Any]
+        } ?? [:], forKey: defaultsKey)
     }
 
     /// From a key press, if it makes a usable global shortcut: it needs
@@ -89,7 +95,7 @@ struct Shortcut: Equatable {
         if modifiers.contains(.option) { text += "⌥" }
         if modifiers.contains(.shift) { text += "⇧" }
         if modifiers.contains(.command) { text += "⌘" }
-        return text + (key == " " ? L("Space") : key.uppercased())
+        return text + (key == " " ? L("空格") : key.uppercased())
     }
 }
 
@@ -103,16 +109,21 @@ final class ShortcutRecorder: NSObject, NSWindowDelegate {
     private var window: NSWindow?
     private var monitor: Any?
     private var done: ((Shortcut??) -> Void)?
+    private var languageSubscription: AnyCancellable?
 
     /// Calls back with the new shortcut, `.some(nil)` for none, or nil if
     /// cancelled.
     func record(_ done: @escaping (Shortcut??) -> Void) {
-        finish(nil)
+        if let window {
+            NSApp.activate(ignoringOtherApps: true)
+            window.makeKeyAndOrderFront(nil)
+            return
+        }
         self.done = done
 
-        let title = NSTextField(labelWithString: L("Press the new shortcut"))
+        let title = NSTextField(labelWithString: L("按下新的快捷键"))
         title.font = .systemFont(ofSize: 15, weight: .semibold)
-        let hint = NSTextField(labelWithString: L("Escape cancels. Delete removes the shortcut."))
+        let hint = NSTextField(labelWithString: L("Escape 取消，Delete 移除快捷键。"))
         hint.font = .systemFont(ofSize: 12)
         hint.textColor = .secondaryLabelColor
         let stack = NSStackView(views: [title, hint])
@@ -120,18 +131,25 @@ final class ShortcutRecorder: NSObject, NSWindowDelegate {
         stack.spacing = 6
         stack.edgeInsets = NSEdgeInsets(top: 22, left: 28, bottom: 22, right: 28)
 
-        let window = NSWindow(contentRect: .zero, styleMask: [.titled, .closable], backing: .buffered, defer: false)
-        window.title = L("Change Shortcut")
+        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 420, height: 100),
+                              styleMask: [.titled, .closable], backing: .buffered, defer: false)
+        window.title = L("更改快捷键")
         window.contentView = stack
         window.isReleasedWhenClosed = false
         window.delegate = self
         window.center()
         self.window = window
+        languageSubscription = AppPreferences.shared.$language.dropFirst().receive(on: RunLoop.main).sink { [weak window, weak title, weak hint] _ in
+            window?.title = L("更改快捷键")
+            title?.stringValue = L("按下新的快捷键")
+            hint?.stringValue = L("Escape 取消，Delete 移除快捷键。")
+        }
         NSApp.activate(ignoringOtherApps: true)
         window.makeKeyAndOrderFront(nil)
 
         monitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
-            guard let self, event.window === self.window else { return event }
+            guard let self, let window = self.window,
+                  event.window === window || (event.window == nil && window.isKeyWindow) else { return event }
             let plain = event.modifierFlags.intersection([.command, .control, .option, .shift]).isEmpty
             if event.keyCode == UInt16(kVK_Escape) && plain {
                 self.finish(nil)
@@ -155,6 +173,7 @@ final class ShortcutRecorder: NSObject, NSWindowDelegate {
     private func finish(_ result: Shortcut??) {
         if let monitor { NSEvent.removeMonitor(monitor) }
         monitor = nil
+        languageSubscription = nil
         let done = self.done
         self.done = nil
         window?.close()

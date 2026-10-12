@@ -12,7 +12,7 @@ private func CGSCopyManagedDisplaySpaces(_ connection: Int32) -> CFArray
 enum FullScreen {
     private static let fullScreenSpaceType = 4
 
-    /// Whether the line also comes down over full screen apps, so screenshots
+    /// Whether the line also comes down over full screen apps, so tasks
     /// stay within reach while you work in one. Off unless turned on: a video
     /// or a presentation should not get a clothesline across the top.
     static var showLineOver: Bool {

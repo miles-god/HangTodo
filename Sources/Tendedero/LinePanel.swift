@@ -1,8 +1,8 @@
 import AppKit
 
 /// A transparent strip along the top of the screen that floats over every
-/// app and every Space except full screen ones, never takes focus, and lets clicks pass through
-/// everywhere except over the photos.
+/// app and Space, never takes focus, and lets clicks pass through outside
+/// the task cards and controls.
 final class LinePanel: NSPanel {
     init(content: NSView) {
         super.init(contentRect: .zero, styleMask: [.borderless, .nonactivatingPanel],
@@ -35,18 +35,17 @@ final class LinePanel: NSPanel {
     override var canBecomeKey: Bool { false }
     override var canBecomeMain: Bool { false }
 
-    /// The line hangs on the screen you are using, which is the one with the
-    /// pointer: that is where you just took the screenshot.
+    /// Hang the line on the screen under the pointer.
     static func screenUnderPointer() -> NSScreen? {
         let mouse = NSEvent.mouseLocation
         return NSScreen.screens.first { NSMouseInRect(mouse, $0.frame, false) }
             ?? NSScreen.main ?? NSScreen.screens.first
     }
 
-    func placeOnScreen(_ screen: NSScreen? = nil) {
+    func placeOnScreen(_ screen: NSScreen? = nil, height: CGFloat = 250) {
         guard let visible = (screen ?? LinePanel.screenUnderPointer())?.visibleFrame else { return }
-        let target = NSRect(x: visible.minX, y: visible.maxY - Layout.panelHeight,
-                            width: visible.width, height: Layout.panelHeight)
+        let target = NSRect(x: visible.minX, y: visible.maxY - height,
+                            width: visible.width, height: height)
         if frame != target { setFrame(target, display: true) }
     }
 }

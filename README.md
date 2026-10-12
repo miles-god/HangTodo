@@ -1,177 +1,79 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/images/hero-dark.png">
-  <img src="docs/images/hero-light.png" alt="Tendedero. Screenshots, hung out to dry. Three screenshots in glass frames hang from a thin line under the macOS menu bar.">
-</picture>
+# HangTodo · 待办晾衣绳
 
-<h3 align="center"><a href="https://tendedero.app/?lang=en">Try it in your browser at tendedero.app&nbsp;&rsaquo;</a></h3>
+基于 Tendedero 的 macOS 原生待办工具：把任务便签挂在屏幕顶部的晾衣绳上，鼠标停在菜单栏或按快捷键即可展开。
 
-<p align="center">
-  Free and open source. For macOS 14 and later.
-  <br>
-  <a href="../../releases/latest">Download&nbsp;&rsaquo;</a>
-  &nbsp;&nbsp;
-  <a href="#build-from-source">Build from source&nbsp;&rsaquo;</a>
-  <br><br>
-  English&nbsp;·&nbsp;<a href="docs/i18n/README.es.md">Español</a>&nbsp;·&nbsp;<a href="docs/i18n/README.gl.md">Galego</a>&nbsp;·&nbsp;<a href="docs/i18n/README.fr.md">Français</a>&nbsp;·&nbsp;<a href="docs/i18n/README.pt-BR.md">Português (Brasil)</a>&nbsp;·&nbsp;<a href="docs/i18n/README.ja.md">日本語</a>&nbsp;·&nbsp;<a href="docs/i18n/README.ko.md">한국어</a>&nbsp;·&nbsp;<a href="docs/i18n/README.zh-Hans.md">简体中文</a>&nbsp;·&nbsp;<a href="docs/i18n/README.tr.md">Türkçe</a>&nbsp;·&nbsp;<a href="docs/i18n/README.az.md">Azərbaycanca</a>
-</p>
+- 一根晾衣绳，按四象限筛选，也可以查看全部象限。象限按钮始终显示待办数量，已完成单独计数。
+- 分类默认是 **工作**，可以新增、重命名、删除其他分类。
+- 新任务默认 **重要且紧急**，支持标题、备注、分类和象限编辑。
+- 点击任务正文编辑，点击独立勾选框完成任务，8 秒内可撤销最近一次完成或重新打开操作。
+- 已完成任务持续保存，支持重新打开，保留原分类、象限、内容和排序位置。
+- 删除分类会把其中的待办和已完成任务转入工作；工作分类保留。
+- 卡片可原生拖动；拖到同象限卡片左半边或右半边调整顺序，顺序保存到本地。
+- 拖到象限按钮修改象限，拖到工作/生活等分类修改归属，拖到已完成完成任务。已完成任务可拖回象限或全部待办。
+- 开始拖动时自动展开分类栏；目标会在鼠标接近或拖入时放大。
+- 鼠标离开不会收起；点击空白区域、切换应用/窗口或 Space 时收起，快捷键仍可手动开关。
+- 每张卡片独立摇摆。无备注时显示紧凑标题，备注按实际换行增加高度，超长备注可点击编辑查看全文。
+- 任务超出屏幕时，点击左右箭头翻页，也可横向滚动。鼠标悬停不会翻页；只绘制可见区域附近的卡片，不会自动删除任务。
+- 底部不显示常驻任务计数；完成或恢复任务后暂时显示撤销提示。
+- 菜单栏只保留设置和退出，独立设置窗口集中管理大小、显示、启动、快捷键和分类。
+- 默认中文，支持中文 / English 即时切换；任务内容和自定义分类名称保留原文。
+- 单实例运行，再次打开应用会呼出现有晾衣绳；直接启动第二个进程也会通知原进程后退出。
+- 完全本地保存，无截图监听、剪贴板监听或截图设置接管。
 
-<p align="center">
-  <a href="https://trendshift.io/repositories/287033?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-287033" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/287033/daily?language=Swift" alt="alejandrobujan%2Ftendedero | Trendshift" width="250" height="55"/></a>
-</p>
+## 构建与运行
 
-<br>
-
-## Out of sight. Within reach.
-
-Every screenshot you take hangs on a line just above your screen.
-Rest the pointer in the menu bar and it glides down. Move away and it's gone.
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/images/demo-dark.gif">
-  <img src="docs/images/demo-light.gif" alt="The pointer rests against the top edge, the line slides down with three screenshots swinging gently, a click copies one, and the line tucks away when the pointer leaves.">
-</picture>
-
-<br>
-<br>
-
-## A gesture for everything.
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/images/bento-dark.png">
-  <img src="docs/images/bento-light.png" alt="Click to copy. Hold to mark up. Drag to share. Let it go.">
-</picture>
-
-<br>
-<br>
-
-| | |
-|:--|:--|
-| Click | Copy the image. |
-| Press and hold | Open it in Markup. |
-| Double click | Open it in Preview. |
-| Force click | Take a quick look. |
-| Drag into an app | Send a copy. It stays on the line. |
-| Drag into a folder | Keep it there. It leaves the line. |
-| Drag to the Trash, or click the cross | Let it go. |
-| Rest the pointer in the menu bar | Bring the line down on that screen. |
-| Click anything in the menu bar | Put it away. |
-| <kbd>⌃</kbd>&thinsp;<kbd>⌥</kbd>&thinsp;<kbd>T</kbd> | Show or hide the line. Change it under Shortcut in the menu bar. |
-
-<br>
-
-## Your Desktop. Finally clear.
-
-Hand Tendedero your screenshots<sup>1</sup> and they skip the Desktop
-entirely. No floating thumbnail. No five-second wait. Each capture hangs
-the instant you take it, and only what you drag out is kept.
-
-Screen recordings hang there too, with a play button over them.
-Press and hold one to trim it.
-
-Same shortcuts. Same muscle memory. Just less mess.
-
-<br>
-
-## Copied images too.
-
-Take a screenshot with <kbd>⌃</kbd> held, or copy an image in Preview, and it
-hangs on the line like any other. Turn on Hang copied images in the menu bar
-and the shirt fills in while it is on. Only images: anything copied along
-with text or a file, and anything a password manager marks as private, is
-left alone.
-
-<br>
-
-## Private by design.
-
-No account. No network. No analytics.
-Tendedero runs entirely on your Mac, and your screenshots never leave it.
-
-<br>
-
-## Tech Specs
-
-| | |
-|:--|:--|
-| **Compatibility** | macOS 14 Sonoma or later, on Apple silicon and Intel. Designed for macOS 27. |
-| **Size** | 1.7 MB |
-| **Languages** | English, Spanish, Galician, French, Portuguese (Brazil), Japanese, Korean, Chinese (Simplified), Turkish, Azerbaijani |
-| **Built with** | Swift, AppKit and SwiftUI |
-| **Network access** | None |
-| **Price** | Free |
-| **License** | MIT for the code. The name and icon are not included. |
-
-<br>
-
-## Install
-
-Download the disk image from the [latest release](../../releases/latest),
-open it and drag Tendedero to Applications. Or install it with Homebrew:
+需要 Apple 芯片 Mac、macOS 14 或以上及 Swift 工具链。
 
 ```sh
-brew install --cask alejandrobujan/tap/tendedero
-```
-
-Tendedero is signed with a Developer ID and notarized by Apple, so it opens
-like any other app.
-
-<br>
-
-## Build from source
-
-```sh
-git clone git@github.com:alejandrobujan/tendedero.git
-cd tendedero
+git clone https://github.com/miles-god/HangTodo.git
+cd HangTodo
 scripts/build-app.sh
-open build/Tendedero.app
+open build/HangTodo.app
 ```
 
-Requires the Swift toolchain. Xcode is optional. With the Command Line Tools for macOS 27, the script falls back to the macOS 26 SDK they install alongside, because the new SDK needs a SwiftUI macro plugin only Xcode includes. Local builds are signed ad hoc,
-so macOS asks again for access to the Desktop after each rebuild.
+构建脚本只生成 Apple silicon（arm64）应用，默认使用 ad-hoc 签名。可选通过 SIGN_IDENTITY 设置本地签名身份。
 
-<details>
-<summary>Inside the app</summary>
-<br>
+```sh
+swift test
+```
 
-| File | Role |
-|:--|:--|
-| `AppDelegate.swift` | Menu bar, shortcut, revealing and tucking away the line |
-| `LinePanel.swift` | The transparent strip along the top of the screen |
-| `LineView.swift` | The line and where each photo hangs |
-| `PeggedView.swift` | One photo: glass frame, clip, swing and breeze |
-| `GrabArea.swift` | Click, long press, drag and drop |
-| `ScreenshotWatcher.swift` | Notices new screenshots |
-| `ClipboardWatcher.swift` | Notices images copied to the clipboard |
-| `Inbox.swift` | Takes over screenshot settings and puts them back |
-| `Markup.swift` | Opens the system Markup editor and saves the result |
-| `Trim.swift` | Trims a screen recording and saves the result |
-| `FullScreen.swift` | Knows when to stay hidden |
-| `Line.swift` | What is hanging, and what you can do with it |
+31 项测试覆盖任务存储、原生拖放接收、实际 SwiftUI 目标及落点坐标、恢复计数、卡片高度、独立晃动、500 项任务的可见范围、空白点击、窗口切换、设置及快捷键持久化、菜单关闭和单实例锁。
 
-Every image here, the icon included, is drawn in code by
-`scripts/make-icon.swift` and `scripts/make-readme-art.swift`.
-`scripts/make-dmg.sh` builds the disk image for releases.
+## 操作
 
-Translations live in `Sources/Tendedero/Resources`, one `.lproj` folder per
-language. `swift scripts/check-strings.swift` checks that none is missing.
+| 操作 | 行为 |
+| --- | --- |
+| 鼠标停在菜单栏 | 呼出当前屏幕上的晾衣绳 |
+| Option + T | 按当前状态交替展开 / 收起，可在设置中修改，重启后保留 |
+| 点击空白 / 切换窗口 | 收起晾衣绳；单纯移开鼠标保持展开 |
+| 菜单栏 → 设置 | 集中修改配置，包括中文 / English |
+| 分类按钮 | 展开底部分类型按钮，选择分类或打开分类管理 |
+| 全部 / 四象限按钮 | 查看对应象限的待办；数字始终是待办数 |
+| 已完成 | 查看当前分类的全部完成记录，或返回原待办象限 |
+| 新增 | 打开输入窗口，默认工作 / 重要且紧急 |
+| 点击任务正文 | 编辑任务 |
+| 拖动卡片 | 同象限内排序，拖到上方象限/已完成或底部分类目标改变归属 |
+| 勾选框 | 完成，或将已完成任务重新打开 |
+| 卡片右上角菜单 | 编辑、修改象限、移动分类、删除 |
+| 点击左右箭头 / 横向滚动 | 浏览更多任务，首尾箭头自动禁用 |
+| 再次打开应用 | 呼出现有晾衣绳，不启动第二个实例 |
 
-</details>
+新增或保存任务后会切换到该任务所属分类，并使它出现在绳上。
 
-<br>
+修改快捷键后立即生效；如果组合无法注册，会保留原快捷键并提示选择其他组合。点击菜单外或切换应用会关闭菜单栏弹出菜单。
 
----
+任务保存在 `~/Library/Application Support/HangTodo/tasks.json`，操作保存成功后才更新界面。若原文件无法读取，保留原文件并暂停修改，避免覆盖数据。
 
-<sub>
-1. On first launch, Tendedero offers to handle your screenshots. If you accept, it turns off the floating thumbnail and saves new screenshots to its own folder, two settings also found under Options in Cmd+Shift+5. Your previous settings are saved and restored when Tendedero quits or the option is turned off from the menu bar. Tendedero hides automatically while an app is in full screen.
-</sub>
+## 项目结构
 
-<br>
-<br>
+- `TaskStore.swift`：任务、四象限、分类、过滤及本地存储。
+- `LineView.swift` / `PeggedView.swift`：晾衣绳、筛选栏、任务卡片及摇摆。
+- `LinePanel.swift` / `AppDelegate.swift`：透明悬浮条、菜单栏、快捷键及显示控制。
+- `TaskDrag.swift`：AppKit 拖动来源和接收视图、剪贴板验证、插入位置及 Dock 式目标反馈。
+- `TaskEditor.swift` / `CategoryManager.swift`：独立输入窗口和分类管理。
+- `SettingsWindow.swift` / `AppPreferences.swift` / `Localization.swift`：设置及即时中英切换。
+- `CardMetrics.swift` / `WindowTracking.swift` / `SingleInstance.swift`：内容高度、独立摇摆、显示事件和进程锁。
 
-<p align="center">
-  <img src="docs/images/icon.png" width="64" height="64" alt="">
-  <br>
-  <sub>The code is MIT licensed. The Tendedero name and icon are not, so forks need their own. See <a href="LICENSE">LICENSE</a>.</sub>
-  <br>
-  <sub>Designed and built by <a href="https://alejandrobujan.com">Alejandro Buján</a>.</sub>
-</p>
+## 来源与许可
+
+基于 Alejandro Buján 的 [Tendedero](https://github.com/alejandrobujan/tendedero) 改造，沿用 MIT 许可并保留原作者声明，见 [LICENSE](LICENSE)。HangTodo 使用独立的名称、应用标识和新绘制的图标；发布内容不包含原项目的图标和宣传素材。
