@@ -1,0 +1,21 @@
+HangTodo is derived from Tendedero by Alejandro Buján.
+Original project: https://github.com/alejandrobujan/tendedero
+
+The original source copyright and MIT license are preserved in LICENSE.
+HangTodo uses an independent name and a new icon.
+
+Upstream name and icon notice (retained from the original LICENSE):
+
+Name and icon
+
+The MIT License above covers the source code. It does not grant any rights
+to the Tendedero name or the Tendedero icon, including the icon artwork drawn
+by scripts/make-icon.swift and the images in the docs folder.
+
+You may build and use the app as published, and you may refer to Tendedero
+to say where your work comes from. Modified or redistributed versions must
+use a different name and a different icon, and must not suggest that they
+are Tendedero or are endorsed by its author.
+
+The new HangTodo icon drawn by scripts/make-todo-icon.swift is distributed
+under the MIT license in LICENSE.

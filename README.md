@@ -76,4 +76,4 @@ swift test
 
 ## 来源与许可
 
-基于 Alejandro Buján 的 [Tendedero](https://github.com/alejandrobujan/tendedero) 改造，沿用 MIT 许可并保留原作者声明，见 [LICENSE](LICENSE)。HangTodo 使用独立的名称、应用标识和新绘制的图标；发布内容不包含原项目的图标和宣传素材。
+基于 Alejandro Buján 的 [Tendedero](https://github.com/alejandrobujan/tendedero) 改造，沿用 MIT 许可并保留原作者声明，见 [LICENSE](LICENSE) 和 [NOTICE](NOTICE)。HangTodo 使用独立的名称、应用标识和新绘制的图标；发布内容不包含原项目的图标和宣传素材。
